@@ -9,15 +9,19 @@ app.controller("AppController", function($scope, $http) {
   // if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
   window.cloudgox = $scope;
   $scope.package = {
-    name: "github.com/jpillora/serve",
+    name: "github.com/admpub/nging",
     version: "",
     versionVar: "main.VERSION",
     commitVar: "main.COMMIT",
+    labelVar: "main.LABEL",
+    label: "",
+    tags:"",
     platforms: null,
     commitish: "",
     cgo: true,
     shrink: true,
-    goGet: true
+    goGet: true,
+    goGenerate: true,
   };
 
   //pull server config

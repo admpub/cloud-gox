@@ -19,7 +19,7 @@
 			<div class="active teal item" ng-if="Connected && !state.Ready">Compiling</div>
 			<div class="active teal item" ng-if="state.NumQueued > 0">{{ state.NumQueued }} Queued</div>
 			<div class="active blue item">Go {{ config.Version }}</div>
-			<a class="active blue item" href="https://github.com/jpillora/cloud-gox" target="_blank">
+			<a class="active blue item" href="https://github.com/admpub/cloud-gox" target="_blank">
 				<i class="github icon"></i> Fork on Github
 			</a>
 		</div>
@@ -40,6 +40,14 @@
 						<label>Version <span class="tip">Sets the <input type="text" class="ldflag" ng-model="package.versionVar"> ld-flag. Click to edit.</span></label>
 						<input type="text" placeholder="1.0.0" ng-model="package.version">
 					</div>
+					<div class="field" ng-show="showMore">
+						<label>Label <span class="tip">Sets the <input type="text" class="ldflag" ng-model="package.labelVar"> ld-flag. Click to edit.</span></label>
+						<input type="text" placeholder="stable" ng-model="package.label">
+					</div>
+					<div class="field" ng-show="showMore">
+						<label>Build Tags</label>
+						<input type="text" placeholder="sqlite3" ng-model="package.tags">
+					</div>
 					<div class="three fields" ng-show="showMore">
 						<div class="field">
 							<label>Enable CGO</label>
@@ -59,6 +67,13 @@
 							<label>Go Get</label>
 							<div class="ui checkbox">
 								<input type="checkbox" ng-model="package.goGet">
+								<label></label>
+							</div>
+						</div>
+						<div class="field">
+							<label>Go Generate</label>
+							<div class="ui checkbox">
+								<input type="checkbox" ng-model="package.goGenerate">
 								<label></label>
 							</div>
 						</div>
@@ -133,7 +148,7 @@
 			|| 's' }}
 		</div>
 		<div>
-			<a href="https://github.com/jpillora" target="_blank">@jpillora</a>
+			<a href="https://github.com/admpub" target="_blank">@admpub</a>
 		</div>
 	</div>
 

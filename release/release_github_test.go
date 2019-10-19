@@ -21,7 +21,7 @@ func TestGithub(t *testing.T) {
 	if err := Github.Auth(); err != nil {
 		t.Fatal(err)
 	}
-	r, err := Github.Setup("github.com/jpillora/cloud-torrent", "0.0.5")
+	r, err := Github.Setup("github.com/jpillora/cloud-torrent", "0.0.5", "")
 	if err != nil {
 		t.Fatal(err)
 	}

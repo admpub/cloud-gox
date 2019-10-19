@@ -71,7 +71,7 @@ label .tip {
 #root label .tip .ldflag {
 	display: inline !important;
 	text-align: center;
-    width: 50px;
+    width: 80px;
 	color: grey;
     height: 20px;
     padding: 0px;

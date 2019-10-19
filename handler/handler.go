@@ -20,9 +20,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jpillora/cloud-gox/release"
-	"github.com/jpillora/cloud-gox/static"
 	"github.com/jpillora/velox"
+
+	"github.com/admpub/cloud-gox/release"
+	"github.com/admpub/cloud-gox/static"
 )
 
 const maxQueue = 20
@@ -266,6 +267,9 @@ func (s *goxHandler) enqueue(c *Compilation) error {
 	}
 	if c.CommitVar == "" {
 		c.CommitVar = "main.COMMIT"
+	}
+	if c.LabelVar == "" {
+		c.LabelVar = "main.LABEL"
 	}
 	if c.Env == nil {
 		c.Env = map[string]string{}

@@ -21,6 +21,8 @@ type Compilation struct {
 	Package   string `json:"name"`
 	Commitish string `json:"commitish"`
 	CommitVar string `json:"commitVar"`
+	LabelVar  string `json:"labelVar"`
+	Label     string `json:"label"`
 	//user compile options
 	CGO        bool              `json:"cgo"`
 	Shrink     bool              `json:"shrink"` //ldflag -s -w
@@ -31,4 +33,8 @@ type Compilation struct {
 	Targets    []string          `json:"targets"`
 	Variables  map[string]string `json:"variables"`
 	Env        map[string]string `json:"env"`
+
+	//[SWH|+]
+	GoGenerate bool   `json:"goGenerate"`
+	Tags       string `json:"tags"`
 }

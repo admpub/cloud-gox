@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jpillora/cloud-gox/handler"
-	"github.com/jpillora/opts"
+	"github.com/admpub/cloud-gox/handler"
+	"github.com/admpub/opts"
 )
 
 var VERSION = "0.0.0-src"
@@ -22,7 +22,7 @@ func main() {
 	opts.New(&config).
 		Name("cloud-gox").
 		Version(VERSION).
-		Repo("github.com/jpillora/cloud-gox").
+		Repo("github.com/admpub/cloud-gox").
 		Parse()
 	//run server
 	h, err := handler.New()

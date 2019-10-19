@@ -70,6 +70,11 @@ func (s *goxHandler) hookReq(w http.ResponseWriter, r *http.Request) {
 		CGO:    q.Get("cgo") == "1",
 		Shrink: q.Get("shrink") != "0",
 		GoGet:  q.Get("goGet") != "0",
+		//[SWH|+]
+		GoGenerate: q.Get("goGenerate") == "1",
+		Tags:       q.Get("tags"),
+		LabelVar:   q.Get("labelVar"),
+		Label:      q.Get("label"),
 	}
 
 	//all hooks, by default, build for all systems

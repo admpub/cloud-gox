@@ -15,7 +15,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jpillora/cloud-gox/release"
+	"github.com/webx-top/com"
+
+	"github.com/admpub/cloud-gox/release"
 )
 
 //temporary storeage for the resulting binaries
@@ -31,7 +33,7 @@ func (s *goxHandler) compile(c *Compilation) error {
 	once := sync.Once{}
 	setupRelease := func() {
 		desc := "*This release was automatically cross-compiled and uploaded by " +
-			"[cloud-gox](https://github.com/jpillora/cloud-gox) at " +
+			"[cloud-gox](https://github.com/admpub/cloud-gox) at " +
 			time.Now().UTC().Format(time.RFC3339) + "* using Go " +
 			"*" + s.config.BinVersion + "*"
 		if r, err := releaser.Setup(c.Package, c.Version, desc); err == nil {
@@ -62,6 +64,14 @@ func (s *goxHandler) compile(c *Compilation) error {
 	if c.GoGet {
 		if err := s.exec(goPath, "go", goEnv, "get", "-v", c.Package); err != nil {
 			return fmt.Errorf("failed to get dependencies %s (%s)", c.Package, err)
+		}
+	} else {
+		localRepo := filepath.Join(os.Getenv("GOPATH"), "src", c.Package)
+		if _, err := os.Stat(localRepo); err != nil {
+			return fmt.Errorf("failed to find package %s", c.Package)
+		}
+		if err := com.CopyDir(localRepo, pkgDir); err != nil {
+			return fmt.Errorf("failed to copy package %s", c.Package)
 		}
 	}
 	if _, err := os.Stat(pkgDir); err != nil {
@@ -94,6 +104,9 @@ func (s *goxHandler) compile(c *Compilation) error {
 			c.Variables[c.CommitVar] = currCommitish
 		}
 	}
+	if len(c.Label) > 0 {
+		c.Variables[c.LabelVar] = c.Label
+	}
 	//calculate ldflags
 	ldflags := []string{}
 	if c.Shrink {
@@ -118,6 +131,12 @@ func (s *goxHandler) compile(c *Compilation) error {
 				continue
 			}
 		}
+		if c.GoGenerate {
+			if err := s.exec(targetDir, "go", goEnv, "generate"); err != nil {
+				s.Printf("failed to generate %s\n", c.Package)
+				continue
+			}
+		}
 		//compile target for all os/arch combos
 		for _, osarchstr := range c.OSArch {
 			osarch := strings.SplitN(osarchstr, "/", 2)
@@ -138,8 +157,11 @@ func (s *goxHandler) compile(c *Compilation) error {
 				"-v",
 				"-ldflags", strings.Join(ldflags, " "),
 				"-o", targetOut,
-				".",
 			}
+			if len(c.Tags) > 0 {
+				args = append(args, "-tags", c.Tags)
+			}
+			args = append(args, ".")
 			c.Env["GOOS"] = osname
 			c.Env["GOARCH"] = arch
 			if !c.CGO {
